@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Visor de Imágenes Interactivo</title>
+    <style>
+        /* Estilos básicos para que el ejemplo funcione */
+        #image {
+            width: 300px;
+            height: 300px;
+            margin: 20px;
+            border: 2px solid black;
+            text-align: center;
+            line-height: 300px; /* Centrado vertical del texto */
+            background-color: lightgray;
+            background-size: cover; /* Asegura que la imagen de fondo cubra el div */
+            background-position: center;
+            transition: background-image 0.5s ease; /* Transición suave para la imagen de fondo */
+        }
+        .preview {
+            width: 100px;
+            height: 100px;
+            margin: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Pase el ratón por encima para previsualizar</h1>
+
+    <div id="image">Pase el ratón por encima de una imagen para mostrarla aquí</div>
+
+    <a href="#" class="preview-link"
+       onmouseover="upDate(this)"
+       onmouseout="unDo()">
+        <img src="https://picsum.photos/id/237/100/100" alt="Un perrito sonriente" class="preview">
+    </a>
+
+    <a href="#" class="preview-link"
+       onmouseover="upDate(this)"
+       onmouseout="unDo()">
+        <img src="https://picsum.photos/id/238/100/100" alt="Una persona meditando" class="preview">
+    </a>
+
+    <a href="#" class="preview-link"
+       onmouseover="upDate(this)"
+       onmouseout="unDo()">
+        <img src="https://picsum.photos/id/239/100/100" alt="Un río en la montaña" class="preview">
+    </a>
+
+    <script>
+        // Los IDs y Clases que vamos a usar
+        const previewDivId = "image"; // ID del elemento a cambiar
+        // La función upDate recibe el elemento que dispara el evento (this)
+        function upDate(previewPic) {
+
+            // Paso 1: Comprobar que el evento se dispara (usando console.log)
+            console.log("Evento 'onmouseover' disparado.");
+
+            // Paso 2: Imprimir información sobre la variable previewPic (alt y fuente)
+            // La variable previewPic es el <a>, necesitamos el <img> dentro
+            const imgElement = previewPic.querySelector('img');
+
+            const altText = imgElement.getAttribute('alt');
+            const sourceURL = imgElement.getAttribute('src');
+
+            console.log("Alt de la imagen:", altText);
+            console.log("Fuente (src) de la imagen:", sourceURL);
+
+            // Paso 3: Obtener el elemento a modificar (el div #image)
+            const displayDiv = document.getElementById(previewDivId);
+            
+            // --- MODIFICACIONES DEL DIV #image ---
+
+            // Paso 4: Cambiar el texto del elemento con el id 'image'
+            // El texto debe ser el contenido del atributo 'alt' de la imagen
+            displayDiv.innerHTML = altText;
+            
+            // Paso 5: Cambiar la imagen de fondo del elemento con el id 'image'
+            // NOTA: Para establecer la imagen de fondo, se usa la propiedad style.backgroundImage
+            // Usamos la URL completa (con url('') )
+            displayDiv.style.backgroundImage = `url('${sourceURL}')`;
+            
+            // Opcional: Para ocultar el texto mientras se muestra la imagen
+            displayDiv.style.color = 'transparent'; 
+        }
+
+        // La función unDo (deshacer)
+        function unDo() {
+            console.log("Evento 'onmouseout' disparado. Deshaciendo cambios.");
+
+            // Obtener el elemento a modificar (el div #image)
+            const displayDiv = document.getElementById(previewDivId);
+
+            // Paso 6: Actualizar la url de la imagen de fondo de vuelta al valor original (none o vacío)
+            displayDiv.style.backgroundImage = 'url("")'; 
+            
+            // Paso 7: Actualizar el texto del div de vuelta al texto original
+            displayDiv.innerHTML = "Pase el ratón por encima de una imagen para mostrarla aquí";
+
+            // Opcional: Devolver el color del texto a la normalidad
+            displayDiv.style.color = 'black'; 
+        }
+    </script>
+</body>
+</html>
