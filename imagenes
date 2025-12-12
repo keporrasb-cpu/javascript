@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería Fotográfica Interactiva Accesible</title>
+    <style>
+        /* Estilos básicos para la galería */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+        #image {
+            width: 600px;
+            height: 400px;
+            border: 5px solid #333;
+            margin-bottom: 20px;
+            background-color: #eee;
+            background-size: cover;
+            background-position: center;
+            display: inline-block;
+        }
+        #thumbnail-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .thumbnail {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: border 0.3s;
+        }
+        .thumbnail:hover, .thumbnail:focus {
+            border-color: #007bff;
+        }
+        .thumbnail[tabindex="0"] {
+            /* Estilo para indicar que el elemento es enfocable */
+            outline: 2px solid blue; 
+        }
+    </style>
+</head>
+<body onload="inicializarGaleria()">
+
+    <h1>Mi Galería de Fotos Accesible</h1>
+
+    <div id="image">
+        Pasa el ratón o enfoca una miniatura para ver la imagen aquí.
+    </div>
+
+    <div id="thumbnail-container">
+        
+        <img class="thumbnail" id="thumb1" src="ruta/a/imagen1.jpg" alt="Un paisaje montañoso nevado al atardecer." 
+             onmouseover="upDate(this)" onmouseleave="unDo()" onfocus="upDate(this)" onblur="unDo()">
+
+        <img class="thumbnail" id="thumb2" src="ruta/a/imagen2.jpg" alt="Primer plano de un café con leche con arte latte." 
+             onmouseover="upDate(this)" onmouseleave="unDo()" onfocus="upDate(this)" onblur="unDo()">
+
+        <img class="thumbnail" id="thumb3" src="ruta/a/imagen3.jpg" alt="Un perro labrador jugando con una pelota en el parque." 
+             onmouseover="upDate(this)" onmouseleave="unDo()" onfocus="upDate(this)" onblur="unDo()">
+
+        <img class="thumbnail" id="thumb4" src="ruta/a/imagen4.jpg" alt="Un moderno rascacielos de cristal en una ciudad vibrante." 
+             onmouseover="upDate(this)" onmouseleave="unDo()" onfocus="upDate(this)" onblur="unDo()">
+
+        <img class="thumbnail" id="thumb5" src="ruta/a/imagen5.jpg" alt="Una bandada de pájaros volando sobre el océano al amanecer." 
+             onmouseover="upDate(this)" onmouseleave="unDo()" onfocus="upDate(this)" onblur="unDo()">
+
+        <img class="thumbnail" id="thumb6" src="ruta/a/imagen6.jpg" alt="Un plato de pasta fresca con tomate y albahaca." 
+             onmouseover="upDate(this)" onmouseleave="unDo()" onfocus="upDate(this)" onblur="unDo()">
+             
+    </div>
+
+    <script>
+        /**
+         * Función: upDate
+         * @param {HTMLElement} previewPic - El elemento de imagen de miniatura que desencadenó el evento (mouseover o focus).
+         * Descripción: Muestra la imagen de la miniatura en el área principal (#image) y actualiza el texto con el alt.
+         */
+        function upDate(previewPic) {
+            // 1. Obtener la referencia al div principal
+            let fullImage = document.getElementById('image');
+
+            // 2. Cambiar la imagen de fondo (CSS) al src de la miniatura
+            fullImage.style.backgroundImage = 'url(' + previewPic.src + ')';
+
+            // 3. Actualizar el texto del div con el texto alternativo
+            fullImage.textContent = previewPic.alt;
+
+            // 4. (Opcional) Establecer el alt como un atributo de aria-label para accesibilidad si es necesario
+            fullImage.setAttribute('aria-label', previewPic.alt);
+        }
+
+        /**
+         * Función: unDo
+         * Descripción: Restaura el área principal (#image) a su estado inicial.
+         */
+        function unDo() {
+            // 1. Obtener la referencia al div principal
+            let fullImage = document.getElementById('image');
+
+            // 2. Quitar la imagen de fondo
+            fullImage.style.backgroundImage = 'none';
+
+            // 3. Restaurar el texto inicial
+            fullImage.textContent = "Pasa el ratón o enfoca una miniatura para ver la imagen aquí.";
+
+            // 4. Limpiar el aria-label
+            fullImage.removeAttribute('aria-label');
+        }
+
+        /**
+         * Función: inicializarGaleria
+         * Descripción: Se ejecuta al cargar la página (onload).
+         * Añade el atributo tabindex="0" a todas las miniaturas para hacerlas enfocables y accesibles por teclado.
+         */
+        function inicializarGaleria() {
+            console.log("Evento onload disparado. Inicializando accesibilidad con teclado.");
+
+            // Seleccionar todas las miniaturas
+            const miniaturas = document.querySelectorAll('.thumbnail');
+
+            // Bucle for para recorrer cada imagen (miniatura)
+            for (let i = 0; i < miniaturas.length; i++) {
+                // Añadir el atributo tabindex
+                // tabindex="0" permite enfocar el elemento con la tecla Tab,
+                // respetando el orden natural del documento.
+                miniaturas[i].setAttribute('tabindex', '0');
+                
+                // Opcional: Registrar para verificar
+                // console.log(`Añadido tabindex="0" a: ${miniaturas[i].id}`);
+            }
+        }
+    </script>
+
+</body>
+</html>
